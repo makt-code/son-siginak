@@ -1,5 +1,4 @@
-index.html</untrusted-document-1d09d500d124>"],"folder_audience":"owner","network_off_limit":"Network access is off and this session did not make this artifact, so tools here can't delete it or comment on it. Of the other ways to change it, only publishing a new version or writing to its database with the db_ tools may work, depending on the artifact. The user can delete it on claude.ai. A chat opened from its page can't delete it either, but can change it, unless it's public or shared outside its organization.","owned_by_user":true,"read":"owner","slug":"2f0611c1-4edf-4baf-a9e7-db55b28b66cc","title":"<untrusted-document-1d09d500d124>Son Sığınak Motel</untrusted-document-1d09d500d124>","total_lines":2037,"url":"https://claude.ai/artifact/6onhWQ4HG8hxCdhP3BSQ6f","version":"1794859931-c565"}
-<untrusted-document-1d09d500d124><!doctype html>
+<!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0f1213">
 <link rel="manifest" href="manifest.webmanifest">
@@ -42,6 +41,16 @@ body{font-family:var(--body);position:fixed;inset:0} /* iOS: sayfanın yana/aşa
 .flr{font-family:var(--disp);font-size:11px;font-weight:400;color:var(--gold);padding:8px 12px;white-space:nowrap}
 #reset{pointer-events:auto;font:600 12px var(--body);color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 12px;cursor:pointer;flex:none}
 #reset.warn{color:#1a0c0e;background:var(--neon);border-color:var(--neon)}
+#pauseBtn{pointer-events:auto;width:36px;height:36px;flex:none;display:grid;place-items:center;padding:0;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:50%;cursor:pointer}
+#pauseBtn svg{width:16px;height:16px;fill:currentColor}
+#pauseBtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#pauseOv{position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(5,7,8,.72);backdrop-filter:blur(3px)}
+#pauseOv[hidden]{display:none}
+#pauseOv h2{font-family:var(--disp);font-weight:400;font-size:30px;margin:0;color:var(--gold);text-shadow:0 0 14px rgba(242,193,78,.4)}
+#pauseOv p{margin:0;color:var(--muted);font-size:14px}
+#resumeBtn{font-family:var(--disp);font-size:18px;color:#1a1408;background:linear-gradient(#ffd66e,var(--gold));border:0;border-radius:16px;padding:14px 30px;cursor:pointer;box-shadow:0 5px 0 #a87a1e}
+#resumeBtn:active{transform:translateY(3px);box-shadow:0 2px 0 #a87a1e}
+#resumeBtn:focus-visible{outline:2px solid #fff;outline-offset:3px}
 #reset:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 #hint{position:fixed;left:12px;right:12px;margin:0 auto;width:fit-content;max-width:calc(100% - 24px);bottom:calc(env(safe-area-inset-bottom,0px) + 10px);line-height:1.3;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:9px 16px;font-size:14px;font-weight:600;text-align:center;pointer-events:none;z-index:2;white-space:normal;text-wrap:balance}
 #hint .k{color:var(--gold)}
@@ -177,13 +186,14 @@ body{font-family:var(--body);position:fixed;inset:0} /* iOS: sayfanın yana/aşa
 </head><body>
 
 <div id="menu">
-  <button id="btnTest" type="button">Deneme · <b>10.000</b></button>
+  <button id="btnTest" type="button">Deneme</button>
   <div class="m-zombies" aria-hidden="true">🧟 🧟‍♀️ 🧟</div>
   <div class="m-title">SON SIĞINAK<br>MOTEL</div>
   <div class="m-sub">Zombi istilasında ayakta kalan son motel. Misafirleri ağırla, katları zombilerden temizle.</div>
   <button id="btnStart" type="button">MACERAYA BAŞLA</button>
   <div class="m-note" id="mNote"></div>
 </div>
+<div id="pauseOv" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><h2 id="pauseTitle">DURAKLATILDI</h2><p>Motel seni bekliyor</p><button id="resumeBtn" type="button">DEVAM ET</button></div>
 <div id="warn" role="alertdialog" aria-labelledby="warnTitle" aria-describedby="warnText" hidden>
   <div class="w-card">
     <div class="w-icon" aria-hidden="true">🧟</div>
@@ -215,7 +225,7 @@ body{font-family:var(--body);position:fixed;inset:0} /* iOS: sayfanın yana/aşa
     <div class="pill stat" id="stat"></div>
     <div class="pill flr free" id="freePill" hidden></div>
   </div>
-  <button id="reset" type="button">Sıfırla</button>
+  <div class="group"><button id="reset" type="button">Sıfırla</button><button id="pauseBtn" type="button" aria-label="Oyunu duraklat"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="2.5" width="3" height="11" rx="1"/><rect x="9.5" y="2.5" width="3" height="11" rx="1"/></svg></button></div>
 </div>
 <div id="hint">Ekrana dokun ve sürükle</div>
 <div id="hurtFlash"></div>
@@ -272,6 +282,11 @@ const FL=[
   {name:'3. KAT',short:'3. Kat',pay:20,stair:3000,zombies:12,zHp:4,win:150,rooms:[150,220,320,450],rec:300,hk:360,hk2:480,tA:'#3a2b33',tB:'#33262d',run:'#4a2a5a',runE:'#6d3d8a',sign:'#d3a2ff'},
 ];
 const STAIR_UP0={x:180,y:44},STAIR_UP={x:180,y:190},STAIR_DOWN={x:180,y:890};
+// merdivenin çizilen alanının tamamı geçerli: yukarı merdiven x 150–210, basamaklar p.y-30…p.y+36, geçidin ağzı dahil
+// (karakter geçidin köşesine takılıp basamağın hemen altında kalsa da kabul edilir); aşağı merdiven kutusu p.x±20, p.y±24
+const onUpStair=(e,p)=>e.x>=140&&e.x<=220&&e.y>=p.y-40&&e.y<=p.y+46;
+const onDownStair=(e,p)=>e.x>=p.x-22&&e.x<=p.x+22&&e.y>=p.y-26&&e.y<=p.y+30;
+const nearUpStair=(e,p)=>e.x>=130&&e.x<=230&&e.y>=p.y-52&&e.y<=p.y+64; // Zombidoku'nun yeniden açılabilmesi için bu alanın dışına çıkmak gerekir
 // yukarı çıkan merdiven her zaman koridorun sonunda durur: koridor uzadıysa (zemin katta spa, 2. katta kantin) en uçtaki geçide taşınır.
 // Yeni bir bölüm koridoru uzatırsa corridorExtended'a eklenmeli.
 const corridorExtended=f=>f===0||(f===KF&&kOpen());
@@ -341,10 +356,18 @@ const PADS=[
      show:()=>S.mUnlocked[r.j]&&!S.mas[r.j],done:()=>{S.mas[r.j]=true;toast('Masöz işe başladı!')}})),
   {id:'mcl',x:CX,y:112,cost:80,label:'SPA TEMİZLİKÇİ',show:()=>S.mUnlocked[0]&&!S.mcl,done:()=>{S.mcl=true;toast('Spa temizlikçisi işe başladı!')}},
 ];
+// bir kattaki tüm satın almalar (odalar, personel, tesis ve geliştirmeleri) bitmeden üst kata merdiven açılmaz
+function floorDone(f){
+  if(f===0)return S.unlocked.every(Boolean)&&S.mUnlocked.every(Boolean)&&S.rec&&S.hk&&S.hk2&&S.rec2&&S.mas.every(Boolean)&&S.mcl;
+  const x=S.floors[f];
+  if(!isOpen(f)||!x.unlocked.every(Boolean)||!x.rec||!x.hk||!x.hk2)return false;
+  if(f===KF){const k=kst();return k.open&&k.tables>=6&&k.cook&&k.waiter&&k.stove>=2&&k.menu>=2;}
+  return true;
+}
 for(const f of [1,2]){
   const s=()=>S.floors[f],c=FL[f],hr=hotels[f].rooms;
   PADS.push({id:'stair'+f,f:f-1,get x(){return upStair(f-1).x},get y(){return upStair(f-1).y},cost:c.stair,label:c.name+' MERDİVENİ',
-    show:()=>s().stage==='locked'&&(f===1?S.mUnlocked[0]:S.floors[1].stage==='open'),
+    show:()=>s().stage==='locked'&&floorDone(f-1),
     done:()=>{s().stage='puzzle';s().pzMiss=0;s().pzHearts=3;save();toast('Merdiven kilitli — Zombidoku\'yu çöz!');}});
   WIN_PADS.forEach((wp,k)=>PADS.push({id:'f'+f+'w'+k,f,x:wp.x,y:wp.y,cost:c.win,label:'BARİKAT',
     show:()=>s().stage==='barricade'&&!s().win[k],
@@ -967,7 +990,7 @@ function changeFloor(to){
   const from=cf;cf=to;
   // yukarı çıkınca katın en altından, aşağı inince koridorun sonundan başlanır
   const arr=to>from?downStair(to):upStair(to);
-  P.x=arr.x;P.y=to>from?arr.y-40:arr.y+36;P.vx=P.vy=0;
+  P.x=arr.x;P.y=to>from?arr.y-42:arr.y+58;P.vx=P.vy=0; // varış noktası merdiven alanının dışında
   camY=camTarget();camInit=true;fadeT=.4;stairT=0;
   floats=[];sparks=[];dust=[];flyers=[];payFly=[];
   toast(FL[to].name);
@@ -979,6 +1002,15 @@ const PAD_DELAY=0.5; // satın alma alanında ödemeye başlamadan önce bekleme
 const padHold={id:null,t:0};
 let paused=false,pzT=0,pzTP=null; // ara oyun giriş sayacı
 const elWarn=document.getElementById('warn');
+let userPaused=false;
+const elPauseOv=document.getElementById('pauseOv');
+function setPause(on){
+  userPaused=on;elPauseOv.hidden=!on;
+  joy.on=false;joy.id=null;for(const k in keys)keys[k]=false;
+  if(on)document.getElementById('resumeBtn').focus();else last=performance.now();
+}
+document.getElementById('pauseBtn').addEventListener('click',()=>setPause(!userPaused));
+document.getElementById('resumeBtn').addEventListener('click',()=>setPause(false));
 function showWarn(){paused=true;joy.on=false;joy.id=null;for(const k in keys)keys[k]=false;elWarn.hidden=false;document.getElementById('warnOk').focus();}
 document.getElementById('warnOk').addEventListener('click',()=>{elWarn.hidden=true;paused=false;last=performance.now();});
 
@@ -1287,16 +1319,16 @@ function update(dt){
   let goTo=-1;
   const nxtS=cf<2?S.floors[cf+1].stage:null;
   if(nxtS==='puzzle'){ // kilitli merdiven: üstüne basınca Zombidoku açılır
-    const d=dist(P,upStair(cf));
-    if(d>34)PZ.arm=true;
-    else if(d<16&&PZ.arm){
+    const up=upStair(cf);
+    if(!nearUpStair(P,up))PZ.arm=true;
+    else if(onUpStair(P,up)&&PZ.arm){
       if(S.freeT>0){PZ.arm=false;toast('Ceza bitmeden Zombidoku açılmaz — '+Math.ceil(S.freeT)+' sn');}
       else{const f=cf+1;pzWait={p:upStair(cf),go:()=>{PZ.arm=false;openPuzzle(f);}};}
     }
   }
   if(pzWait){pzT+=dt;pzTP=pzWait.p;if(pzT>=T_STAIR){pzT=0;pzWait.go();}}else pzT=0;
-  if(cf<2&&nxtS!=='locked'&&nxtS!=='puzzle'&&dist(P,upStair(cf))<16)goTo=cf+1;
-  else if(cf>0&&dist(P,downStair(cf))<16)goTo=cf-1;
+  if(cf<2&&nxtS!=='locked'&&nxtS!=='puzzle'&&onUpStair(P,upStair(cf)))goTo=cf+1;
+  else if(cf>0&&onDownStair(P,downStair(cf)))goTo=cf-1;
   if(goTo>=0){stairT+=dt;if(stairT>=T_STAIR)changeFloor(goTo);}else stairT=0;
 
   // satın alma alanları
@@ -1821,11 +1853,11 @@ function drawDepo(f){
 function drawStairs(){
   if(cf<2&&(cf>0||S.mUnlocked[0])){
     const nxt=S.floors[cf+1],locked=nxt.stage==='locked'||nxt.stage==='puzzle',padShown=PADS.some(p=>p.id==='stair'+(cf+1)&&p.show());
-    drawStairway(upStair(cf),locked,padShown?null:(nxt.stage==='puzzle'?'ZOMBİDOKU':locked?'KAPALI':FL[cf+1].short));
+    drawStairway(upStair(cf),locked,padShown?null:(nxt.stage==='puzzle'?'ZOMBİDOKU':locked?(floorDone(cf)?'KAPALI':'ÖNCE KATI TAMAMLA'):FL[cf+1].short));
   }
   if(cf>0)drawStair(downStair(cf),'down',false,FL[cf-1].short);
   if(pzT>0&&pzTP)ring(pzTP.x,pzTP.y-38,7,pzT/T_STAIR,'#9fd27a');
-  if(stairT>0){const p=cf<2&&dist(P,upStair(cf))<16?upStair(cf):downStair(cf);ring(p.x,p.y-36,7,stairT/T_STAIR,'#fff');}
+  if(stairT>0){const p=cf<2&&onUpStair(P,upStair(cf))?upStair(cf):downStair(cf);ring(p.x,p.y-36,7,stairT/T_STAIR,'#fff');}
 }
 
 function drawWorld(){
@@ -2001,7 +2033,7 @@ const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let last=performance.now(),saveT=0,lastHint='',lastStat='',lastFloor='',moved=false;
 function frame(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;
-  if(!PZ.open&&!paused)update(dt);
+  if(!PZ.open&&!paused&&!userPaused)update(dt);
   if(fadeT>0)fadeT-=dt;
   saveT+=dt;if(saveT>3){saveT=0;save();}
   ctx.setTransform(1,0,0,1,0,0);
